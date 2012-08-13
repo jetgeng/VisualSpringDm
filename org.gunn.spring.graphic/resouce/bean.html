@@ -1,0 +1,15 @@
+{% for bean in beans.keys() %}
+	class {{ beans[bean]._classname }} {
+	}
+	{% for ref in beans[bean].refs.keys() %}
+		{% if isinstance(beans[bean].refs[ref] , Bean  ) %}
+			class {{ beans[bean].refs[ref]._classname }}
+			{{ beans[bean]._classname }}  --> {{ beans[bean].refs[ref]._classname }}
+		{% else %}
+		{% if isinstance(beans[bean].refs[ref] , Service  ) %}
+			interface {{ beans[bean].refs[ref]._classname }}
+			{{ beans[bean]._classname }}  --> {{ beans[bean].refs[ref]._classname }}
+		{% endif %}
+		{% endif %}
+	{% endfor %}
+{% endfor %}

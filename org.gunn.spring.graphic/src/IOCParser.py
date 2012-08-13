@@ -132,22 +132,17 @@ class BeanParser(handler.ContentHandler):
         if u'osgi:service' == name :
             service = Service(self._bundle, attrs)
             self._services[service._id] = service
-            print "get a services %s" % service 
         elif u'bean'  == name :
             self.currentBean = Bean(self._bundle , attrs)
         elif u'property' == name :
             self.currentPropertyName = attrs["name"]
             self.currentBean.addProperty(attrs)
-            print "add property %s to Bean %s" % (self.currentPropertyName, self.currentBean)
         elif u'ref' == name :
             if self.currentBean != None and self.currentPropertyName != None :
                 self.currentBean.addProperty({"name":self.currentPropertyName,"ref":attrs["bean"]})
-                print "add property %s to Bean %s" % (self.currentPropertyName, self.currentBean)
         elif u'osgi:reference' == name :
             osgiReference = ServiceRef(self._bundle,attrs)
             self._refs[osgiReference._id] = osgiReference
-            print "handle bean interface is : %s" % attrs.get("interface") 
-        #print name ,attrs
     
     def endElement(self, name):
         if u'bean' == name and self.currentBean != None:

@@ -22,7 +22,7 @@ beanTemplate = '''
     class  ${ bean.refs[ref]._classname } {
     }
     %else:
-     interface  ${ bean.refs[ref]._classname } << (S,#3194E4) ImportedServer >> {
+     interface  ${ bean.refs[ref]._classname } << (I,#3194E4) ImportedServer >> {
     }
     %endif
    

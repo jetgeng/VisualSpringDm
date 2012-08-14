@@ -22,7 +22,7 @@ beanTemplate = '''
     class  ${ bean.refs[ref]._classname } {
     }
     %else:
-     interface  ${ bean.refs[ref]._classname } {
+     interface  ${ bean.refs[ref]._classname } << (S,#3194E4) ImportedServer >> {
     }
     %endif
    
@@ -30,7 +30,15 @@ beanTemplate = '''
     % endfor
 
 '''
+
+servicesTemplate = '''
+    interface ${service._classname} << (S,#FF7700) ExportedServer >>{
+    }
+    ${service._classname} <|-- ${service._implClass}
+'''
+
 beanRendTemplate = Template(beanTemplate)
+servicesTemplate = Template(servicesTemplate)
 
 class SuperBean():
     '''
@@ -95,7 +103,10 @@ class Service(Bean):
         '''
         获取ref代表的真正的类
         '''
-        pass
+        self._implClass = beans[self._ref]._classname if beans.has_key(self._ref) else ""
+    
+    def render(self):
+        return servicesTemplate.render(service=self )
     
     def __str__ (self):
         return "Services (id= %s , bundle = %s , interface=%s , refName = %s) "  \
